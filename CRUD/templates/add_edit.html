@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="mb-3">{{ action }} Student</h2>
+<form method="POST" class="row g-3">
+  <div class="col-12">
+    <label for="name" class="form-label">Name</label>
+   
+    <input id="name" type="text" name="name" class="form-control" value="{{ student.name if student else '' }}" required>
+  </div>
+
+  <div class="col-12">
+    <label class="form-label d-block">Sex</label>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="sex" id="male" value="Male"
+        {% if student and student.sex=='Male' %}checked{% endif %} required>
+      <label class="form-check-label" for="male">Male</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="sex" id="female" value="Female"
+        {% if student and student.sex=='Female' %}checked{% endif %} required>
+      <label class="form-check-label" for="female">Female</label>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <label for="department" class="form-label">Department</label>
+    <select id="department" name="department" class="form-select" required>
+      <option value="">-- Select department --</option>
+      <option value="IT" {% if student and student.department=='IT' %}selected{% endif %}>IT</option>
+      <option value="HR" {% if student and student.department=='HR' %}selected{% endif %}>HR</option>
+      <option value="Business" {% if student and student.department=='Business' %}selected{% endif %}>Business</option>
+      <option value="Engineering" {% if student and student.department=='Engineering' %}selected{% endif %}>Engineering</option>
+    </select>
+  </div>
+
+  <div class="col-12">
+    <button class="btn btn-primary">{{ action }}</button>
+    <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+  </div>
+</form>
+
+{# flash handling for add/edit/errors #}
+{% with flashed = get_flashed_messages(with_categories=true) %}
+<script>
+const flashedLocal = {{ flashed|tojson }};
+</script>
+{% endwith %}
+
+{% endblock %}

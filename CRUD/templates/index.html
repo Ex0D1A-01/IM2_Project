@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2 class="mb-0">Student Records</h2>
+  <a href="{{ url_for('add_student') }}" class="btn btn-success">➕ Add Student</a>
+</div>
+
+<table id="studentTable" class="table table-hover table-bordered align-middle">
+  <thead class="table-dark">
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Sex</th>
+      <th>Department</th>
+      <th class="text-center">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for s in students %}
+    <tr>
+      <td>{{ s.student_id }}</td>
+      <td>{{ s.name }}</td>
+      <td>{{ s.sex }}</td>
+      <td>{{ s.department }}</td>
+      <td class="text-center">
+        <a href="{{ url_for('edit_student', id=s.student_id) }}" class="btn btn-warning btn-sm me-1">Edit</a>
+        <form action="{{ url_for('delete_student', id=s.student_id) }}" method="POST" class="d-inline deleteForm">
+          <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+        </form>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+{# Get flashed messages (categories included) and pass to JS #}
+{% with flashed = get_flashed_messages(with_categories=true) %}
+<script>
+const flashed = {{ flashed|tojson }};
+</script>
+{% endwith %}
+{% endblock %}
